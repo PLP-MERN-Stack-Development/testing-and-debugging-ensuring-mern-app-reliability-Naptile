@@ -1,89 +1,138 @@
-# 🧪 Week 6: Testing and Debugging – Ensuring MERN App Reliability
+# MERN Bug Tracker - Testing and Debugging
 
-## 🚀 Objective
-Implement comprehensive testing strategies for a MERN stack application, including unit testing, integration testing, and end-to-end testing, while also learning debugging techniques to identify and fix common issues.
+This project is a **MERN stack application** for tracking bugs in a project, with a focus on **testing and debugging best practices**. Users can create, update, view, and delete bugs. The project includes comprehensive **unit, integration, and end-to-end testing**, along with debugging techniques.
 
-## 📂 Tasks
+---
 
-### Task 1: Setting Up Testing Environment
-- Configure Jest as the testing framework for both client and server
-- Set up testing utilities for React components (React Testing Library)
-- Configure Supertest for API endpoint testing
-- Create a separate test database for integration tests
-- Implement test scripts in package.json for running different types of tests
+## Table of Contents
 
-### Task 2: Unit Testing
-- Write unit tests for utility functions in both client and server
-- Test React components in isolation using mocks for dependencies
-- Implement tests for Redux reducers and actions (if applicable)
-- Create tests for custom hooks in React
-- Test Express middleware functions
-- Achieve at least 70% code coverage for unit tests
+- [Project Structure](#project-structure)  
+- [Installation](#installation)  
+- [Running the Application](#running-the-application)  
+- [Testing](#testing)  
+  - [Server Tests](#server-tests)  
+  - [Client Tests](#client-tests)  
+- [Debugging Techniques](#debugging-techniques)  
+- [Error Handling](#error-handling)  
+- [Testing Strategy](#testing-strategy)  
+- [Screenshots](#screenshots)  
 
-### Task 3: Integration Testing
-- Write tests for API endpoints using Supertest
-- Test database operations with a test database
-- Implement integration tests for React components that interact with APIs
-- Test authentication flows
-- Create tests for form submissions and data validation
+---
 
-### Task 4: End-to-End Testing
-- Set up Cypress or Playwright for end-to-end testing
-- Create tests for critical user flows (e.g., registration, login, CRUD operations)
-- Test navigation and routing
-- Implement tests for error handling and edge cases
-- Create visual regression tests for UI components
+## Project Structure
 
-### Task 5: Debugging Techniques
-- Use logging strategies for server-side debugging
-- Implement error boundaries in React
-- Use browser developer tools for client-side debugging
-- Create a global error handler for the Express server
-- Implement performance monitoring and optimization
+mern-bug-tracker/
+├── client/
+│ ├── src/
+│ │ ├── components/
+│ │ └── tests/
+├── server/
+│ ├── src/
+│ │ ├── controllers/
+│ │ ├── models/
+│ │ ├── routes/
+│ │ └── middleware/
+│ └── tests/
+├── jest.config.js
+└── package.json
 
-## 🧪 Expected Outcome
-- A comprehensive test suite for a MERN stack application
-- Well-documented testing strategies and methodologies
-- High code coverage for critical application features
-- Improved application reliability and stability
-- Implementation of debugging tools and techniques
+yaml
+Copy code
 
-## 🛠️ Setup
-1. Clone the starter code repository
-2. Install dependencies for both client and server:
-   ```
-   # In the root directory
-   npm run install-all
-   ```
-3. Set up the test database:
-   ```
-   # In the server directory
-   npm run setup-test-db
-   ```
-4. Run the tests:
-   ```
-   # Run all tests
-   npm test
-   
-   # Run only unit tests
-   npm run test:unit
-   
-   # Run only integration tests
-   npm run test:integration
-   
-   # Run only end-to-end tests
-   npm run test:e2e
-   ```
+---
 
-## ✅ Submission Instructions
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Complete all the tasks in the assignment
-4. Commit and push your code regularly to show progress
-5. Include in your repository:
-   - Complete test files for unit, integration, and end-to-end testing
-   - Documentation of your testing strategy
-   - Screenshots of test coverage reports
-   - Examples of debugging techniques implemented
-6. Your submission will be automatically graded based on the criteria in the autograding configuration
-7. The instructor will review your submission after the autograding is complete 
+## Installation
+
+1. Clone your repository:
+
+```bash
+git clone <your-repo-url>
+cd mern-bug-tracker
+Install dependencies for server:
+
+bash
+Copy code
+cd server
+npm install
+Install dependencies for client:
+
+bash
+Copy code
+cd ../client
+npm install
+Running the Application
+Backend server and frontend client are separate.
+
+Start the server:
+
+bash
+Copy code
+cd server
+npm start
+Start the client (if React frontend is used):
+
+bash
+Copy code
+cd client
+npm start
+Testing
+Server Tests
+Unit tests: Test individual functions and helpers.
+
+Integration tests: Test API endpoints (POST, GET, PUT, DELETE) with Supertest and in-memory MongoDB.
+
+Run server tests:
+
+bash
+Copy code
+cd server
+npm test
+All integration tests for posts.test.js are passing.
+
+Client Tests
+Unit tests: Test React components with React Testing Library and Jest.
+
+Example: Button component test covers rendering, variants, sizes, disabled state, click handler, and additional props.
+
+Run client tests:
+
+bash
+Copy code
+cd client
+npm test
+All Button component tests are passing.
+
+Debugging Techniques
+Server-side:
+
+Console logs for tracking variables and API flow.
+
+Node.js inspector for debugging server functions.
+
+MongoDB Memory Server to isolate database issues during testing.
+
+Client-side:
+
+React Testing Library to check rendering and events.
+
+Jest error messages for failing tests.
+
+Console logs for component state debugging.
+
+Error Handling
+Backend: Express middleware handles errors and returns proper HTTP status codes (400, 401, 403, 404).
+
+Frontend: React error boundaries catch component crashes and display fallback UI.
+
+Testing Strategy
+Unit Tests: Verify individual functions or components work as expected.
+
+Integration Tests: Verify interactions between components or API endpoints.
+
+End-to-End Tests (optional): Simulate user workflows like creating, updating, and deleting bugs.
+
+
+
+Server tests:
+
+

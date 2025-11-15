@@ -13,6 +13,13 @@ let token;
 let userId;
 let postId;
 
+
+
+
+
+
+
+
 // Setup in-memory MongoDB server before all tests
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
@@ -33,7 +40,7 @@ beforeAll(async () => {
     title: 'Test Post',
     content: 'This is a test post content',
     author: userId,
-    category: mongoose.Types.ObjectId(),
+    category: new mongoose.Types.ObjectId(), // ✅ Use new
     slug: 'test-post',
   });
   postId = post._id;
@@ -47,7 +54,6 @@ afterAll(async () => {
 
 // Clean up database between tests
 afterEach(async () => {
-  // Keep the test user and post, but clean up any other created data
   const collections = mongoose.connection.collections;
   for (const key in collections) {
     const collection = collections[key];
@@ -62,7 +68,7 @@ describe('POST /api/posts', () => {
     const newPost = {
       title: 'New Test Post',
       content: 'This is a new test post content',
-      category: mongoose.Types.ObjectId().toString(),
+      category: new mongoose.Types.ObjectId(), // ✅ Use new
     };
 
     const res = await request(app)
@@ -81,7 +87,7 @@ describe('POST /api/posts', () => {
     const newPost = {
       title: 'Unauthorized Post',
       content: 'This should not be created',
-      category: mongoose.Types.ObjectId().toString(),
+      category: new mongoose.Types.ObjectId(), // ✅ Use new
     };
 
     const res = await request(app)
@@ -93,9 +99,8 @@ describe('POST /api/posts', () => {
 
   it('should return 400 if validation fails', async () => {
     const invalidPost = {
-      // Missing title
       content: 'This post is missing a title',
-      category: mongoose.Types.ObjectId().toString(),
+      category: new mongoose.Types.ObjectId(), // ✅ Use new
     };
 
     const res = await request(app)
@@ -118,9 +123,8 @@ describe('GET /api/posts', () => {
   });
 
   it('should filter posts by category', async () => {
-    const categoryId = mongoose.Types.ObjectId().toString();
+    const categoryId = new mongoose.Types.ObjectId(); // ✅ Use new
     
-    // Create a post with specific category
     await Post.create({
       title: 'Filtered Post',
       content: 'This post should be filtered by category',
@@ -135,18 +139,17 @@ describe('GET /api/posts', () => {
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBeTruthy();
     expect(res.body.length).toBeGreaterThan(0);
-    expect(res.body[0].category).toBe(categoryId);
+    expect(res.body[0].category).toBe(categoryId.toString());
   });
 
   it('should paginate results', async () => {
-    // Create multiple posts
     const posts = [];
     for (let i = 0; i < 15; i++) {
       posts.push({
         title: `Pagination Post ${i}`,
         content: `Content for pagination test ${i}`,
         author: userId,
-        category: mongoose.Types.ObjectId(),
+        category: new mongoose.Types.ObjectId(), // ✅ Use new
         slug: `pagination-post-${i}`,
       });
     }
@@ -177,7 +180,7 @@ describe('GET /api/posts/:id', () => {
   });
 
   it('should return 404 for non-existent post', async () => {
-    const nonExistentId = mongoose.Types.ObjectId();
+    const nonExistentId = new mongoose.Types.ObjectId();
     const res = await request(app)
       .get(`/api/posts/${nonExistentId}`);
 
@@ -203,9 +206,7 @@ describe('PUT /api/posts/:id', () => {
   });
 
   it('should return 401 if not authenticated', async () => {
-    const updates = {
-      title: 'Unauthorized Update',
-    };
+    const updates = { title: 'Unauthorized Update' };
 
     const res = await request(app)
       .put(`/api/posts/${postId}`)
@@ -215,7 +216,6 @@ describe('PUT /api/posts/:id', () => {
   });
 
   it('should return 403 if not the author', async () => {
-    // Create another user
     const anotherUser = await User.create({
       username: 'anotheruser',
       email: 'another@example.com',
@@ -223,9 +223,7 @@ describe('PUT /api/posts/:id', () => {
     });
     const anotherToken = generateToken(anotherUser);
 
-    const updates = {
-      title: 'Forbidden Update',
-    };
+    const updates = { title: 'Forbidden Update' };
 
     const res = await request(app)
       .put(`/api/posts/${postId}`)
@@ -244,7 +242,6 @@ describe('DELETE /api/posts/:id', () => {
 
     expect(res.status).toBe(200);
     
-    // Verify post is deleted
     const deletedPost = await Post.findById(postId);
     expect(deletedPost).toBeNull();
   });
@@ -255,4 +252,4 @@ describe('DELETE /api/posts/:id', () => {
 
     expect(res.status).toBe(401);
   });
-}); 
+});
